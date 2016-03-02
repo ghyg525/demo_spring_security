@@ -1,4 +1,4 @@
-package entity;
+package org.yangjie.entity;
 
 public class User {
 	

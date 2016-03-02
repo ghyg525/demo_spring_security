@@ -1,10 +1,9 @@
-package config;
+package org.yangjie.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
-
-import entity.User;
+import org.yangjie.entity.User;
 
 /**
  * 对象与表的映射设置

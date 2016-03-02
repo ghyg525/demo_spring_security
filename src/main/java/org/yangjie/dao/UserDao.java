@@ -1,21 +1,19 @@
-package dao;
+package org.yangjie.dao;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-
-import entity.User;
+import org.yangjie.entity.User;
 
 @Repository	// 注册dao层spring管理bean
 public class UserDao {
 	
-	@Resource
+	@Autowired
 	private JdbcTemplate jdbcTemplate;
-	@Resource
+	@Autowired
 	private BeanPropertyRowMapper<User> userMapper;
 	
 	/**
