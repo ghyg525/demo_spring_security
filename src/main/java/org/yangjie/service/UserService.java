@@ -1,25 +1,26 @@
 package org.yangjie.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.yangjie.dao.UserDao;
 import org.yangjie.entity.User;
 
-@Service // 注册service层spring管理bean
-@Transactional // 使用spring事务管理
-public class UserService {
+@Service
+public class UserService implements UserDetailsService{
 	
 	@Autowired
 	private UserDao userDao;  
-	
-	/**
-	 * 按用户名和密码查询用户
-	 * @param username
-	 */
-	public User get(String username, String password) {
-		return userDao.select(username, password);
+
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		User user = userDao.getByUsername(username);
+		if (user == null) {
+			throw new UsernameNotFoundException("用户不存在");
+		}
+		return user;
 	}
-	
 	
 }

@@ -1,17 +1,39 @@
 package org.yangjie.entity;
 
-public class User {
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+@Entity
+public class User implements UserDetails{
+	private static final long serialVersionUID = 1L;
 	
-	private int userid;
+	@Id
+	@GeneratedValue
+	private int id;
 	private String username;
 	private String password;
 	
+	@ManyToMany(cascade=CascadeType.REFRESH, fetch=FetchType.EAGER)
+	private List<Role> roles;
 	
-	public int getUserid() {
-		return userid;
+	
+	public int getId() {
+		return id;
 	}
-	public void setUserid(int userid) {
-		this.userid = userid;
+	public void setId(int id) {
+		this.id = id;
 	}
 	public String getUsername() {
 		return username;
@@ -24,5 +46,36 @@ public class User {
 	}
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	public List<Role> getRoles() {
+		return roles;
+	}
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
+	}
+	
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		List<GrantedAuthority> authList = new ArrayList<>();
+		for(Role role : this.getRoles()){
+			authList.add(new SimpleGrantedAuthority(role.getName()));
+		}
+		return authList;
+	}
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+	@Override
+	public boolean isEnabled() {
+		return true;
 	}
 }
